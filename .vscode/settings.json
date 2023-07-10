@@ -1,0 +1,7 @@
+{
+  "python.formatting.autopep8Path": "/home/brandonh/.local/bin/autopep8",
+  "python.linting.pylintEnabled": true,
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportGeneralTypeIssues": "none"
+  }
+}
