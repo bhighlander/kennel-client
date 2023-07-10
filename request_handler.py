@@ -9,6 +9,7 @@ from views import get_all_animals, get_single_animal, get_all_locations, get_sin
 # common purpose is to respond to HTTP requests from a client.
 class HandleRequests(BaseHTTPRequestHandler):
     def parse_url(self, path):
+        """Controls the functionality of any GET, PUT, POST, DELETE requests to the server    """
         # Just like splitting a string in JavaScript. If the
         # path is "/animals/1", the resulting list will
         # have "" at index 0, "animals" at index 1, and "1"
