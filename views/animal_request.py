@@ -4,21 +4,24 @@ ANIMALS = [
         "name": "Snickers",
         "species": "Dog",
         "locationId": 1,
-        "customerId": 4
+        "customerId": 4,
+        "status": "Admitted"
     },
     {
         "id": 2,
         "name": "Roman",
         "species": "Dog",
         "locationId": 1,
-        "customerId": 2
+        "customerId": 2,
+        "status": "Admitted"
     },
     {
         "id": 3,
         "name": "Blue",
         "species": "Cat",
         "locationId": 2,
-        "customerId": 1
+        "customerId": 1,
+        "status": "Admitted"
     }
 ]
 
@@ -48,3 +51,9 @@ def delete_animal(id):
             animal_index = index
     if animal_index >= 0:
         ANIMALS.pop(animal_index)
+
+def update_animal(id, new_animal):
+    for index, animal in enumerate(ANIMALS):
+        if animal["id"] == id:
+            ANIMALS[index] = new_animal
+            break
