@@ -1,6 +1,6 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from views import get_all_animals, get_single_animal, get_all_locations, get_single_location, get_all_employees, get_single_employee, get_all_customers, get_single_customer, create_animal, create_location, create_employee, create_customer
+from views import get_all_animals, get_single_animal, get_all_locations, get_single_location, get_all_employees, get_single_employee, get_all_customers, get_single_customer, create_animal, create_location, create_employee, create_customer, delete_animal, delete_location, delete_employee, delete_customer
 
 
 # Here's a class. It inherits from another class.
@@ -107,6 +107,30 @@ class HandleRequests(BaseHTTPRequestHandler):
     def do_PUT(self):
         """Handles PUT requests to the server"""
         self.do_PUT()
+
+    def do_DELETE(self):
+        self._set_headers(204)
+        (resource, id) = self.parse_url(self.path)
+
+        if resource == "animals":
+            delete_animal(id)
+
+        self.wfile.write("".encode())
+
+        if resource == "locations":
+            delete_location(id)
+
+        self.wfile.write("".encode())
+
+        if resource == "employees":
+            delete_employee(id)
+
+        self.wfile.write("".encode())
+
+        if resource == "customers":
+            delete_customer(id)
+
+        self.wfile.write("".encode())
 
     def _set_headers(self, status):
         # Notice this Docstring also includes information about the arguments passed to the function
