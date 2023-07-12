@@ -41,10 +41,13 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "animals":
             if id is not None:
                 response = get_single_animal(id)
+                if response is None:
+                    self._set_headers(404)
+                    response = "Not Found"
             else:
                 response = get_all_animals()
 
-        self.wfile.write(json.dumps(response).encode())
+            self.wfile.write(json.dumps(response).encode())
 
         if resource == "locations":
             if id is not None:
@@ -52,7 +55,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = get_all_locations()
 
-        self.wfile.write(json.dumps(response).encode())
+            self.wfile.write(json.dumps(response).encode())
 
         if resource == "employees":
             if id is not None:
@@ -60,7 +63,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = get_all_employees()
 
-        self.wfile.write(json.dumps(response).encode())
+            self.wfile.write(json.dumps(response).encode())
         
         if resource == "customers":
             if id is not None:
@@ -68,7 +71,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = get_all_customers()
 
-        self.wfile.write(json.dumps(response).encode())
+            self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         self._set_headers(201)
@@ -84,25 +87,25 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "animals":
             new_animal = create_animal(post_body)
 
-        self.wfile.write(json.dumps(new_animal).encode())
+            self.wfile.write(json.dumps(new_animal).encode())
 
         new_location = None
 
         if resource == "locations":
             new_location = create_location(post_body)
-        self.wfile.write(json.dumps(new_location).encode())
+            self.wfile.write(json.dumps(new_location).encode())
 
         new_employee = None
 
         if resource == "employees":
             new_employee = create_employee(post_body)
-        self.wfile.write(json.dumps(new_employee).encode())
+            self.wfile.write(json.dumps(new_employee).encode())
 
         new_customer = None
 
         if resource == "customers":
             new_customer = create_customer(post_body)
-        self.wfile.write(json.dumps(new_customer).encode())
+            self.wfile.write(json.dumps(new_customer).encode())
 
     # A method that handles any PUT request.
     def do_PUT(self):
@@ -116,22 +119,22 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "animals":
             update_animal(id, post_body)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
         if resource == "locations":
             update_location(id, post_body)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
         if resource == "employees":
             update_employee(id, post_body)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
         if resource == "customers":
             update_customer(id, post_body)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
     def do_DELETE(self):
         self._set_headers(204)
@@ -140,22 +143,22 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "animals":
             delete_animal(id)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
         if resource == "locations":
             delete_location(id)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
         if resource == "employees":
             delete_employee(id)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
         if resource == "customers":
             delete_customer(id)
 
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
     def _set_headers(self, status):
         # Notice this Docstring also includes information about the arguments passed to the function
