@@ -85,26 +85,55 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_animal = None
 
         if resource == "animals":
-            new_animal = create_animal(post_body)
+            if "name" in post_body and "species" in post_body and "locationId" in post_body and "customerId" in post_body and "status" in post_body:
+                self._set_headers(201)
+                new_animal = create_animal(post_body)
+            else:
+                self._set_headers(400)
+                new_animal = {
+                    "message": f'{"name is required" if "name" not in post_body else ""} {"species is required" if "species" not in post_body else ""} {"locationId is required" if "locationId" not in post_body else ""} {"customerId is required" if "customerId" not in post_body else ""} {"status is required" if "status" not in post_body else ""}'
+                }
 
             self.wfile.write(json.dumps(new_animal).encode())
 
         new_location = None
 
         if resource == "locations":
-            new_location = create_location(post_body)
+            if "name" in post_body and "address" in post_body:
+                self._set_headers(201)
+                new_location = create_location(post_body)
+            else:
+                self._set_headers(400)
+                new_location = {
+                    "message": f'{"name is required" if "name" not in post_body else ""} {"address is required" if "address" not in post_body else ""}'
+                }
+            
             self.wfile.write(json.dumps(new_location).encode())
 
         new_employee = None
 
         if resource == "employees":
-            new_employee = create_employee(post_body)
+            if "name" in post_body:
+                self._set_headers(201)
+                new_employee = create_employee(post_body)
+            else:
+                self._set_headers(400)
+                new_employee = {
+                    "message": f'{"name is required" if "name" not in post_body else ""}'
+                }
             self.wfile.write(json.dumps(new_employee).encode())
 
         new_customer = None
 
         if resource == "customers":
-            new_customer = create_customer(post_body)
+            if "name" in post_body:
+                self._set_headers(201)
+                new_customer = create_customer(post_body)
+            else:
+                self._set_headers(400)
+                new_customer = {
+                    "message": f'{"name is required" if "name" not in post_body else ""}'
+                }
             self.wfile.write(json.dumps(new_customer).encode())
 
     # A method that handles any PUT request.
@@ -137,28 +166,27 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write("".encode())
 
     def do_DELETE(self):
-        self._set_headers(204)
+    
         (resource, id) = self.parse_url(self.path)
+
+        if resource == "customers":
+            self._set_headers(405)
+            response = {
+            "message": "Contact us directly to delete a customer"
+            }
+            self.wfile.write(json.dumps(response).encode())
+            return
+
+        self._set_headers(204)
 
         if resource == "animals":
             delete_animal(id)
-
-            self.wfile.write("".encode())
-
-        if resource == "locations":
-            delete_location(id)
-
-            self.wfile.write("".encode())
-
-        if resource == "employees":
+        elif resource == "locations":
+            delete_location(id)  
+        elif resource == "employees":
             delete_employee(id)
-
-            self.wfile.write("".encode())
-
-        if resource == "customers":
-            delete_customer(id)
-
-            self.wfile.write("".encode())
+    
+        self.wfile.write("".encode())
 
     def _set_headers(self, status):
         # Notice this Docstring also includes information about the arguments passed to the function
