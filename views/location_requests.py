@@ -40,5 +40,6 @@ def delete_location(id):
 def update_location(id, new_location):
     for index, location in enumerate(LOCATIONS):
         if location["id"] == id:
+            new_location["id"] = id
             LOCATIONS[index] = new_location
             break
