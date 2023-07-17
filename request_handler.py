@@ -64,7 +64,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_all_employees()
 
             self.wfile.write(json.dumps(response).encode())
-        
+
         if resource == "customers":
             if id is not None:
                 response = get_single_customer(id)
@@ -107,7 +107,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 new_location = {
                     "message": f'{"name is required" if "name" not in post_body else ""} {"address is required" if "address" not in post_body else ""}'
                 }
-            
+
             self.wfile.write(json.dumps(new_location).encode())
 
         new_employee = None
@@ -166,7 +166,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             self.wfile.write("".encode())
 
     def do_DELETE(self):
-    
+
         (resource, id) = self.parse_url(self.path)
 
         if resource == "customers":
@@ -185,7 +185,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_location(id)  
         elif resource == "employees":
             delete_employee(id)
-    
+
         self.wfile.write("".encode())
 
     def _set_headers(self, status):

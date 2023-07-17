@@ -43,5 +43,6 @@ def delete_customer(id):
 def update_customer(id, new_customer):
     for index, customer in enumerate(CUSTOMERS):
         if customer["id"] == id:
+            new_customer["id"] = id
             CUSTOMERS[index] = new_customer
             break

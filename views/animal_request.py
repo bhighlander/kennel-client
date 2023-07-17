@@ -67,5 +67,6 @@ def delete_animal(id):
 def update_animal(id, new_animal):
     for index, animal in enumerate(ANIMALS):
         if animal["id"] == id:
+            new_animal["id"] = id
             ANIMALS[index] = new_animal
             break
