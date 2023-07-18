@@ -34,7 +34,7 @@ def get_all_employees():
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            employee = Employee(row['id'], row['name'])
+            employee = Employee(row['id'], row['name'], row['location_id'])
             employees.append(employee.__dict__)
 
     return employees
@@ -54,7 +54,7 @@ def get_single_employee(id):
 
         data = db_cursor.fetchone()
 
-        employee = Employee(data['id'], data['name'])
+        employee = Employee(data['id'], data['name'], data['location_id'])
 
         return employee.__dict__
 
@@ -79,3 +79,21 @@ def update_employee(id, new_employee):
             new_employee["id"] = id
             EMPLOYEES[index] = new_employee
             break
+
+def get_employees_by_location(location):
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        SELECT
+            e.id,
+            e.name
+        FROM employee e
+        WHERE e.location_id = ?
+        """, ( location, ))
+        employees = []
+        dataset = db_cursor.fetchall()
+        for row in dataset:
+            employee = Employee(row['id'], row['name'], row['location_id'])
+            employees.append(employee.__dict__)
+    return employees
