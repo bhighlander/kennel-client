@@ -123,12 +123,24 @@ def get_single_animal(id):
 
         return animal.__dict__
 
-def create_animal(animal):
-    max_id = ANIMALS[-1]["id"]
-    new_id = max_id + 1
-    animal["id"] = new_id
-    ANIMALS.append(animal)
-    return animal
+def create_animal(new_animal):
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        INSERT INTO Animal
+            ( name, breed, status, location_id, customer_id )
+        VALUES
+            ( ?, ?, ?, ?, ?);
+        """, (new_animal['name'], new_animal['breed'],
+            new_animal['status'], new_animal['locationId'],
+            new_animal['customerId'], ))
+
+        id = db_cursor.lastrowid
+
+        new_animal['id'] = id
+
+    return new_animal
 
 def delete_animal(id):
     with sqlite3.connect("./kennel.sqlite3") as conn:
